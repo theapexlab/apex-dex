@@ -4,5 +4,8 @@
   "version": "0.0.1",
   "author": {
     "name": "Marton Dobos"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.1"
   }
 }
