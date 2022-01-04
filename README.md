@@ -33,4 +33,4 @@ The DeFi ecosystem evolves quickly, but three dominant AMM models have emerged: 
 - Balancer stretches the limits of Uniswap by allowing users to create dynamic liquidity pools of up to eight different assets in any ratio, thus expanding AMMs’ flexibility.
   </br></br>
 
-Read more about AMMs [here](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers#section-automated-market-maker-variations)
+Read more about AMMs [here](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers)
