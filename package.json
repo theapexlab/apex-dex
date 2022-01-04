@@ -1,0 +1,12 @@
+{
+  "name": "automated-market-maker",
+  "description": "Automated Market Maker demo application",
+  "version": "0.0.1",
+  "author": {
+    "name": "Marton Dobos"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
