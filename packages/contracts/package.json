@@ -1,0 +1,8 @@
+{
+  "name": "contracts",
+  "description": "Automated Market Maker smart contracts",
+  "version": "0.0.1",
+  "author": {
+    "name": "Marton Dobos"
+  }
+}
