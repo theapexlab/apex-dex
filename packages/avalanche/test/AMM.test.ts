@@ -158,4 +158,56 @@ describe('Automated Market Maker test', () => {
     expect(user1Holdings).to.eql([BigNumber.from(4000), BigNumber.from(4000), BigNumber.from(100000000)]);
     expect(user2Holdings).to.eql([BigNumber.from(0), BigNumber.from(0), BigNumber.from(500000000)]);
   });
+
+  it('should return the correct withdraw amount of the tokens', async () => {
+    const token10000 = BigNumber.from(1000);
+    const token50000 = BigNumber.from(5000);
+
+    // Send token to the user
+    await contract.faucet(token50000, token50000);
+
+    // 50-50% initial liquidity
+    await contract.provide(token10000, token10000);
+
+    await contract.provide(BigNumber.from(2000), BigNumber.from(2000));
+
+    await contract.withdraw(BigNumber.from(100000000));
+
+    const poolDetails = await contract.getPoolDetails();
+
+    expect(poolDetails).to.eql([BigNumber.from(2000), BigNumber.from(2000), BigNumber.from(200000000)]);
+  });
+
+  it('should estimate the swap tokens correctly', async () => {
+    const token10000 = BigNumber.from(1000);
+
+    // Send token to the user
+    await contract.faucet(token10000, token10000);
+
+    // 50-50% initial liquidity
+    await contract.provide(token10000, token10000);
+
+    const token2 = await contract.getSwapToken1Estimate(token10000);
+
+    expect(token2).to.eql(BigNumber.from(500));
+  });
+
+  it('should estimate the swap tokens correctly', async () => {
+    const token10000 = BigNumber.from(1000);
+    const token50000 = BigNumber.from(5000);
+
+    // Send token to the user
+    await contract.faucet(token50000, token50000);
+
+    // 50-50% initial liquidity
+    await contract.provide(token10000, token10000);
+
+    await contract.swapToken1(token10000);
+
+    const myHolding = await contract.getMyHoldings();
+
+    expect(myHolding.amountToken1).to.eql(BigNumber.from(3000));
+    expect(myHolding.amountToken2).to.eql(BigNumber.from(4500));
+    expect(myHolding.myShare).to.eql(BigNumber.from(100000000));
+  });
 });
