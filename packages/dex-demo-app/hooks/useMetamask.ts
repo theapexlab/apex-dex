@@ -1,32 +1,68 @@
-import { useState } from 'react';
-import { ethers } from 'ethers';
+import { useState, useRef, useEffect } from 'react';
+import MetaMaskOnboarding from '@metamask/onboarding';
 
 type ExtendedWindow = Window & typeof globalThis & { ethereum: any };
 
 type UseMetamaskHook = {
   (): {
-    address: string | null;
-    connectToMetamask: () => Promise<void>;
+    isConnected: boolean;
+    isLoading: boolean;
+    accounts: string[] | null;
+    connectMetamask: () => Promise<void>;
   };
 };
 
 export const useMetamask: UseMetamaskHook = () => {
-  const [address, setAddress] = useState<string | null>(null);
+  const [accounts, setAccounts] = useState<string[] | null>(null);
 
-  const connectToMetamask = async () => {
+  const onboarding = useRef<MetaMaskOnboarding>();
+
+  useEffect(() => {
+    if (!onboarding.current) {
+      onboarding.current = new MetaMaskOnboarding();
+    }
+  }, []);
+
+  useEffect(() => {
+    const extendedWindow = window as ExtendedWindow;
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      if (extendedWindow.ethereum.isConnected()) {
+        extendedWindow.ethereum.request({ method: 'eth_requestAccounts' }).then(setAccounts);
+      }
+
+      extendedWindow.ethereum.on('accountsChanged', setAccounts);
+      return () => {
+        extendedWindow.ethereum.removeListener('accountsChanged', setAccounts);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+      if (accounts && accounts.length > 0 && onboarding.current) {
+        onboarding.current.stopOnboarding();
+      }
+    }
+  }, [accounts]);
+
+  const connectMetamask = async () => {
     try {
-      const extendedWindow = window as ExtendedWindow;
-      await extendedWindow.ethereum.enable();
-      const provider = new ethers.providers.Web3Provider(extendedWindow.ethereum);
-      const add = await provider.getSigner().getAddress();
-      setAddress(add);
+      if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+        (window as ExtendedWindow).ethereum.request({ method: 'eth_requestAccounts' }).then(setAccounts);
+      } else if (onboarding.current) {
+        onboarding.current.startOnboarding();
+      }
     } catch (error) {
       console.error('Could not connect to the Metamask');
     }
   };
 
+  console.log('isConnected', accounts);
+
   return {
-    address,
-    connectToMetamask,
+    isConnected: !!accounts && accounts.length > 0,
+    isLoading: accounts === null,
+    accounts,
+    connectMetamask,
   };
 };
