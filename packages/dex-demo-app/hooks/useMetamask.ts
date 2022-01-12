@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import MetaMaskOnboarding from '@metamask/onboarding';
 
-type ExtendedWindow = Window & typeof globalThis & { ethereum: any };
-
 type UseMetamaskHook = {
   (): {
     isConnected: boolean;
@@ -24,15 +22,14 @@ export const useMetamask: UseMetamaskHook = () => {
   }, []);
 
   useEffect(() => {
-    const extendedWindow = window as ExtendedWindow;
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-      if (extendedWindow.ethereum.isConnected()) {
-        extendedWindow.ethereum.request({ method: 'eth_requestAccounts' }).then(setAccounts);
+      if (window.ethereum.isConnected()) {
+        window.ethereum.request({ method: 'eth_requestAccounts' }).then(setAccounts);
       }
 
-      extendedWindow.ethereum.on('accountsChanged', setAccounts);
+      window.ethereum.on('accountsChanged', setAccounts);
       return () => {
-        extendedWindow.ethereum.removeListener('accountsChanged', setAccounts);
+        window.ethereum.removeListener('accountsChanged', setAccounts);
       };
     }
   }, []);
@@ -48,7 +45,7 @@ export const useMetamask: UseMetamaskHook = () => {
   const connectMetamask = async () => {
     try {
       if (MetaMaskOnboarding.isMetaMaskInstalled()) {
-        (window as ExtendedWindow).ethereum.request({ method: 'eth_requestAccounts' }).then(setAccounts);
+        window.ethereum.request({ method: 'eth_requestAccounts' }).then(setAccounts);
       } else if (onboarding.current) {
         onboarding.current.startOnboarding();
       }
