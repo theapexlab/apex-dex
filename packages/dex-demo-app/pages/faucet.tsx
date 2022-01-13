@@ -1,41 +1,46 @@
 import type { NextPage } from 'next';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { InputGroup } from '../components/inputGroup';
 import { Layout } from '../components/layout';
-import { useAccount } from '../hooks/useAccount';
-import { useMetamask } from '../hooks/useMetamask';
+import { Loader } from '../components/loader';
+import { LoggedOutState } from '../components/loggedOutState';
+import { useAuthContext } from '../context/auth/context';
+import { useContractContext } from '../context/contractProvider';
+import { useWalletAccount } from '../hooks/useWalletAccount';
 import { PRECISION } from '../utils/config';
 
 const Faucet: NextPage = () => {
-  const contract = null;
-  const { accounts } = useMetamask();
-  const { getHoldings } = useAccount({ contract });
+  const [isLoading, setLoading] = useState(false);
 
-  //const [amountOfToken1, setAmountOfToken1] = useState(0);
-  //const [amountOfToken2, setAmountOfToken2] = useState(0);
+  const token1Ref = useRef<HTMLInputElement | null>(null);
+  const token2Ref = useRef<HTMLInputElement | null>(null);
 
-  console.log('address', accounts);
+  const { authState } = useAuthContext();
+  const { contractInterface } = useContractContext();
+  const { amountOfToken1, amountOfToken2, faucetWallet } = useWalletAccount({ contract: contractInterface });
 
   const onFund = async () => {
-    if (contract === null) {
-      alert('Connect to Metamask');
-      return;
-    }
-
     try {
-      /*    let response = await contract.faucet(amountOfToken1 * PRECISION, amountOfToken2 * PRECISION);
-      let res = await response.wait();
-      console.log('res', res);
-      setAmountOfToken1(0);
-      setAmountOfToken2(0);
-      await getHoldings();*/
-    } catch (err) {
-      if ((err as any).data) {
-        alert((err as any).data?.message);
+      setLoading(true);
+
+      const amountOfToken1 = token1Ref.current?.valueAsNumber || 0;
+      const amountOfToken2 = token2Ref.current?.valueAsNumber || 0;
+
+      await faucetWallet(amountOfToken1 * PRECISION, amountOfToken2 * PRECISION);
+
+      // Set the input fields to default
+      if (token1Ref.current) {
+        token1Ref.current.value = '0';
       }
 
-      console.log(err);
+      if (token2Ref.current) {
+        token2Ref.current.value = '0';
+      }
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
     }
   };
 
@@ -45,16 +50,41 @@ const Faucet: NextPage = () => {
         <h1 className="text-3xl font-bold text-gray-900">Faucet</h1>
       </div>
 
-      <div className="flex flex-col items-center py-8 space-y-8">
-        <InputGroup type="number" label="amount of TOKEN1" currency="TOKEN1" aria-describedby="token1-currency" />
-        <InputGroup type="number" label="amount of TOKEN2" currency="TOKEN2" aria-describedby="token2-currency" />
+      <div className="relative flex flex-col items-center py-8 space-y-8">
+        {authState.error ? (
+          <LoggedOutState />
+        ) : (
+          <>
+            <div className="flex flex-col items-end space-y-2">
+              <span className="text-sm font-bold">Balance: {amountOfToken1}</span>
+              <InputGroup
+                ref={token1Ref}
+                type="number"
+                label="amount of TOKEN1"
+                currency="TOKEN1"
+                aria-describedby="token1-currency"
+              />
+            </div>
+            <div className="flex flex-col items-end space-y-2">
+              <span className="text-sm font-bold">Balance: {amountOfToken2}</span>
+              <InputGroup
+                ref={token2Ref}
+                type="number"
+                label="amount of TOKEN2"
+                currency="TOKEN2"
+                aria-describedby="token2-currency"
+              />
+            </div>
 
-        <button
-          type="button"
-          className="inline-flex items-center px-4 py-2 border  bg-slate-800 shadow-sm text-sm font-medium rounded-md text-white  hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
-          onClick={onFund}>
-          Fund
-        </button>
+            <button
+              type="button"
+              disabled={isLoading}
+              className="w-32 flex justify-center items-center px-4 py-2 border bg-slate-800 shadow-sm text-sm font-medium rounded-md text-white  hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+              onClick={onFund}>
+              {isLoading ? <Loader /> : 'Fund'}
+            </button>
+          </>
+        )}
       </div>
     </Layout>
   );

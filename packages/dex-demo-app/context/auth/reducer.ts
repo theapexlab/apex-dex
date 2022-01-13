@@ -19,7 +19,7 @@ export type AuthState = {
   isHydrated: boolean;
   status: ACTION_TYPES;
   error: string | null;
-  data: any;
+  data: string[];
 };
 
 export type AuthReducer = Reducer<AuthState, Action>;
@@ -29,7 +29,7 @@ export const initialAuthState = {
   isHydrated: false,
   status: ACTION_TYPES.INITIAL,
   error: null,
-  data: {},
+  data: [],
 };
 
 const authReducer: AuthReducer = (state = initialAuthState, action) => {
@@ -57,6 +57,7 @@ const authReducer: AuthReducer = (state = initialAuthState, action) => {
         isLoading: false,
         status: ACTION_TYPES.ACCOUNTS_ERROR,
         error: action.error || null,
+        payload: [],
       };
 
     default:

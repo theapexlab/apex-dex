@@ -4,8 +4,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Disclosure } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import { useMetamask } from '../hooks/useMetamask';
 import { Footer } from './footer';
+import { useAuthContext } from '../context/auth/context';
 
 type Props = {
   title: string;
@@ -24,7 +24,7 @@ const navigationList = [
 export const Layout: FC<Props> = ({ children, title, description }) => {
   const router = useRouter();
 
-  const { isLoading, isConnected, connectMetamask } = useMetamask();
+  const { authState, connectWallet } = useAuthContext();
 
   const navigation = navigationList.map((nav) => ({ ...nav, current: router.route === nav.href }));
 
@@ -64,11 +64,11 @@ export const Layout: FC<Props> = ({ children, title, description }) => {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center space-x-4 md:ml-6">
-                      {!isLoading && !isConnected && (
+                      {!authState.isLoading && authState.error && (
                         <button
                           type="button"
                           className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white  hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
-                          onClick={connectMetamask}>
+                          onClick={connectWallet}>
                           Connect Metamask
                         </button>
                       )}

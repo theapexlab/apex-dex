@@ -76,9 +76,9 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const connectWallet = async () => {
-    const { status, data } = authState;
+    const { status, error } = authState;
 
-    const hasNoEthereum = status === ACTION_TYPES.ACCOUNTS_ERROR && data.error === errorStatuses.NO_ETHEREUM_FOUND;
+    const hasNoEthereum = status === ACTION_TYPES.ACCOUNTS_ERROR && error === errorStatuses.NO_ETHEREUM_FOUND;
     if (hasNoEthereum) return;
 
     await getAccountsAction({

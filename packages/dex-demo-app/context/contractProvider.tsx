@@ -3,6 +3,7 @@ import { Contract, ethers } from 'ethers';
 
 import ammContract from '../../avalanche/artifacts/contracts/AMM.sol/AMM.json';
 import { useAuthContext } from './auth/context';
+import { CONTRACT_ADDRESS } from '../utils/config';
 
 type ContractContext = {
   contractInterface: Contract | null;
@@ -29,9 +30,8 @@ export const ContractProvider: React.FC = ({ children }) => {
       const signer = provider.getSigner();
 
       // This address will be different for every network
-      const contractAddress = process.env.CONTRACT_ADDRESS || '';
       // Initialise the contract instance
-      const contract = new ethers.Contract(contractAddress, ammContract.abi, signer);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, ammContract.abi, signer);
 
       // Store this instance in the state
       setContractInterface(contract);
