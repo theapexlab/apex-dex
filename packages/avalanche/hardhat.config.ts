@@ -58,7 +58,7 @@ const config = {
       url: 'https://api.avax-test.network/ext/bc/C/rpc', // Public Avalanche testnet
       gasPrice: 225000000000,
       chainId: 43113,
-      accounts: [], // Use your account private key on the Avalanche testnet
+      accounts: [process.env.TEST_ACCOUNT_PRIVATE_KEY], // Use your account private key on the Avalanche testnet
     },
     mainnet: {
       url: 'https://api.avax.network/ext/bc/C/rpc', // Public Avalanche mainnet
