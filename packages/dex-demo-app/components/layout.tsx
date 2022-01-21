@@ -72,12 +72,6 @@ export const Layout: FC<Props> = ({ children, title, description }) => {
                           Connect Metamask
                         </button>
                       )}
-                      <button
-                        type="button"
-                        className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">
@@ -110,15 +104,15 @@ export const Layout: FC<Props> = ({ children, title, description }) => {
                     </Disclosure.Button>
                   ))}
                 </div>
-                <div className="pt-4 pb-3 border-t border-gray-700">
-                  <div className="flex items-center px-5">
+                <div className="pt-4 pb-3 px-4 border-t border-gray-700">
+                  {
                     <button
                       type="button"
-                      className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                      className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white  hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                      onClick={connectWallet}>
+                      Connect Metamask
                     </button>
-                  </div>
+                  }
                 </div>
               </Disclosure.Panel>
             </>
