@@ -1,7 +1,7 @@
 {
   "name": "automated-market-maker",
   "description": "Automated Market Maker demo application",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Marton Dobos"
   },
