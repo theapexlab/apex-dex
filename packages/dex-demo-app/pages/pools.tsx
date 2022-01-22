@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Info } from '../components/info';
 import { InputGroup } from '../components/inputGroup';
 import { Layout } from '../components/layout';
@@ -9,8 +9,6 @@ import { LoggedOutState } from '../components/loggedOutState';
 import { useAuthContext } from '../context/auth/context';
 import { useContractContext } from '../context/contractProvider';
 import { usePool } from '../hooks/usePool';
-import { useWalletAccount } from '../hooks/useWalletAccount';
-import { PRECISION } from '../utils/config';
 
 const Pools: NextPage = () => {
   const [isLoading, setLoading] = useState(false);
