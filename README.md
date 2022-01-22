@@ -8,6 +8,10 @@ This project is a basic concept of a DEX application. The purpose is to learn ho
 
 The application is based on a simple monorepo. There are two packages, one for the smart contracts-related codes and one for the front-end application. The easiest way to develop the project is using the packages locally, both of them contain the necessary information in the README files. If you want to deploy the front-end application somewhere I suggest using a testnet for the smart contract, in this case, the deployed front-end application can reach a deployed smart contract.
 
+[Read more about the smart contracts](./packages/avalanche/README.md)
+
+[Read more about the web app](./packages/dex-demo-app/README.md)
+
 ## Knowledgebase
 
 ### What is automated market maker?
