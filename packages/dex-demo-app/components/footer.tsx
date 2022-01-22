@@ -12,8 +12,8 @@ export const Footer: React.FC = () => (
         <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
       </span>
     </a>
-    <a href="https://github.com/dobosmarton" target="_blank" rel="noopener noreferrer">
-      Created by Marton Dobos
+    <a href="https://apexlab.io/" target="_blank" rel="noopener noreferrer">
+      Created by Apex Lab
     </a>
   </footer>
 );

@@ -1,9 +1,10 @@
 {
   "name": "contracts",
-  "description": "Automated Market Maker smart contracts",
+  "description": "DEX smart contracts",
   "version": "0.0.2",
   "author": {
-    "name": "Marton Dobos"
+    "name": "Apex Lab",
+    "url": "https://github.com/theapexlab"
   },
   "scripts": {
     "accounts": "npx hardhat accounts",

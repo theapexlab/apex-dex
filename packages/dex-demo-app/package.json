@@ -2,6 +2,10 @@
   "name": "dex-demo-app",
   "private": true,
   "version": "0.0.2",
+  "author": {
+    "name": "Apex Lab",
+    "url": "https://github.com/theapexlab"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

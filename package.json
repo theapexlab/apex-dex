@@ -1,9 +1,10 @@
 {
-  "name": "automated-market-maker",
-  "description": "Automated Market Maker demo application",
+  "name": "apex-dex",
+  "description": "Decentralized exchange demo application",
   "version": "0.0.2",
   "author": {
-    "name": "Marton Dobos"
+    "name": "Apex Lab",
+    "url": "https://github.com/theapexlab"
   },
   "private": true,
   "workspaces": [
