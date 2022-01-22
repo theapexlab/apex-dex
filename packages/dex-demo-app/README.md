@@ -1,34 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DEX application
 
-## Getting Started
+## Getting started
 
-First, run the development server:
+1. Fulfill the steps in the avalanche package to get a deployed address
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+2. Create an `.env.local` file based on the `.env.example` and use the deployed address as the `CONTRACT_ADDRESS` variable
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Install the packages: `yarn`
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+4. Start the application: `yarn run dev`
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Features
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+A short description of the available features.
 
-## Learn More
+### Faucet
 
-To learn more about Next.js, take a look at the following resources:
+This application is a basic concept of a DEX application, so you can't use the tokens from your Metamask directly. The smart contract stores the tokens of the user and allows only two of them. To fill this virtual wallet you can use the faucet feature. Basically, you can transfer your AVAX tokens from Metamask to the smart contract to fill these virtual tokens. These will be stored in the smart contract, so be aware, if you update the contract, these will be lost.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Pools
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The application has a pool whit the two virtual tokens. You can provide liquidity to the pool to be able to swap your tokens. Because on a DEX there is no central authority, the liquidity providers supply the users with the swappable tokens.
 
-## Deploy on Vercel
+### Swap
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+If the pool has liquidity, the users can swap their tokens. The actual swapping ratio is calculated on the fly based on the supply.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Withdraw
+
+The users can withdraw their provided liquidity from the pool. In this case, the withdrawn tokens will be removed from the pool.

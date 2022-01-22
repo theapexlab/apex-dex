@@ -8,5 +8,9 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "start:client:dev": "cd packages/dex-demo-app && yarn run dev",
+    "start:avalanche": "source  ~/.bash_profile && cd $GOPATH/src/github.com/ava-labs/avalanchego && ./build/avalanchego --network-id=local --staking-enabled=false --snow-sample-size=1 --snow-quorum-size=1"
+  }
 }

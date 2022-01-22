@@ -1,6 +1,16 @@
-# Automated Market Maker
+# DEX application
 
-## What is automated market maker?
+## About the project
+
+This project is a basic concept of a DEX application. The purpose is to learn how a DEX works from the basics to a deeper understanding. Do not use this project on a mainnet because it is far from a production ready DEX application.
+
+## Structure
+
+The application is based on a simple monorepo. There are two packages, one for the smart contracts-related codes and one for the front-end application. The easiest way to develop the project is using the packages locally, both of them contain the necessary information in the README files. If you want to deploy the front-end application somewhere I suggest using a testnet for the smart contract, in this case, the deployed front-end application can reach a deployed smart contract.
+
+## Knowledgebase
+
+### What is automated market maker?
 
 > An automated market maker (AMM) is a system that provides liquidity to the exchange it operates in through automated trading.
 
@@ -9,7 +19,7 @@ An automated market maker (AMM) is the underlying protocol that powers decentral
 The assets held within a liquidity pool are traded via an algorithm, rather than the limit order book model used in traditional markets.
 </br></br>
 
-## How AMMs work?
+### How AMMs work?
 
 AMMs have become a primary way to trade assets in the DeFi ecosystem, and it all began with a blog post about “on-chain market makers” by Ethereum founder Vitalik Buterin. The secret ingredient of AMMs is a simple mathematical formula that can take many forms. The most common one was proposed by Vitalik as:
 
@@ -22,7 +32,7 @@ and popularized by Uniswap as:
 The constant, represented by `k` means there is a constant balance of assets that determines the price of tokens in a liquidity pool. For example, if an AMM has ether (ETH) and bitcoin (BTC), two volatile assets, every time ETH is bought, the price of ETH goes up as there is less ETH in the pool than before the purchase.
 </br></br>
 
-## AMM variations
+### AMM variations
 
 The DeFi ecosystem evolves quickly, but three dominant AMM models have emerged: [Uniswap](https://uniswap.org/), [Curve](https://curve.fi/), and [Balancer](https://balancer.fi/).
 
