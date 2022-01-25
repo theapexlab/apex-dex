@@ -11,7 +11,9 @@ For testing purpuses we will use [Hardhat](https://hardhat.org/getting-started/)
 
 1. intall the npm packages: `yarn`
 
-2. run the tests: `yarn run test`
+2. fill out the `.env` file based on the `.env.example`
+
+3. run the tests: `yarn run test`
 
 ## Networks setup
 
