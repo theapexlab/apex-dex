@@ -12,7 +12,8 @@
     "precompile": "rimraf ./build/",
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat run scripts/deploy.ts",
-    "test": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat test",
+    "contract-size": "npx hardhat size-contracts",
+    "test": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat test --network localhost",
     "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
     "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol"
   },
@@ -34,6 +35,7 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.2",
     "hardhat": "^2.8.0",
+    "hardhat-contract-sizer": "^2.4.0",
     "husky": "^7.0.4",
     "mocha": "^9.1.3",
     "prettier": "^2.5.1",
