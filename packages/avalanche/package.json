@@ -14,7 +14,9 @@
     "deploy": "npx hardhat run scripts/deploy.ts",
     "test": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat test",
     "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
-    "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol"
+    "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol",
+    "install:avalanche": "./scripts/install.sh",
+    "start:avalanche": "./scripts/start.sh"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.1"

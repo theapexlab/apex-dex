@@ -1,0 +1,120 @@
+@username = test
+@password = 7qq4SVhubMrYne2GMQQB22kHxtThYnQx
+@prefunded_private_key = PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN
+@x_chain_address = 
+@c_chain_address = 
+@p_chain_address = 
+
+### Create a User
+
+POST http://127.0.0.1:9650/ext/keystore
+Content-Type: application/json
+
+{
+  "jsonrpc":"2.0",
+    "id"     :1,
+    "method" :"keystore.createUser",
+    "params" :{
+        "username": "{{username}}",
+        "password": "{{password}}"
+    }
+}
+
+### Fund C-Chain
+
+POST http://127.0.0.1:9650/ext/bc/C/avax
+Content-Type: application/json
+
+{
+  "jsonrpc":"2.0",
+  "id"     : 1,
+  "method" :"avm.getBalance",
+  "params" :{
+      "method": "avax.importKey",
+      "params": {
+          "username":"{{username}}",
+          "password":"{{password}}",
+          "privateKey":"{{prefunded_private_key}}"
+      },
+      "jsonrpc": "2.0",
+      "id": 1
+  }
+}
+
+### Check the C-Chain balance
+
+POST http://127.0.0.1:9650/ext/bc/C/rpc
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBalance",
+  "params": [
+      "{{c_chain_address}}",
+      "latest"
+  ],
+  "id": 1
+}
+
+### Fund X-Chain
+
+POST http://127.0.0.1:9650/ext/bc/X
+Content-Type: application/json
+
+{
+  "jsonrpc":"2.0",
+  "id"     :1,
+  "method" :"avm.importKey",
+  "params" :{
+      "username": "{{username}}",
+      "password": "{{password}}",
+      "privateKey": "{{prefunded_private_key}}"
+  }
+}
+
+
+### Check X-Chain balance
+
+POST http://127.0.0.1:9650/ext/bc/X
+Content-Type: application/json
+
+{
+  "jsonrpc":"2.0",
+  "id"     : 1,
+  "method" :"avm.getBalance",
+  "params" :{
+      "address": "{{x_chain_address}}",
+      "assetID": "AVAX"
+  }
+}
+
+
+### Fund P-Chain
+
+POST 127.0.0.1:9650/ext/bc/P
+Content-Type: application/json
+
+{
+  "jsonrpc":"2.0",
+    "id"     :1,
+    "method" :"platform.importKey",
+    "params" :{
+        "username":"{{username}}",
+        "password":"{{password}}",
+        "privateKey":"{{prefunded_private_key}}"
+    }
+}
+
+### Check P-Chain balance
+
+POST 127.0.0.1:9650/ext/bc/P
+Content-Type: application/json
+
+{
+  "jsonrpc":"2.0",
+    "id"     :1,
+    "method" :"platform.getBalance",
+    "params" :{
+      "address": "{{p_chain_address}}"
+    }
+}
