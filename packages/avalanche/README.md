@@ -5,23 +5,33 @@ However in this demo application, we will use the Avalanche blockchain, so the n
 
 Read more about the Avalanche blockchain [here](https://docs.avax.network/learn/getting-started).
 
+### Installation
+
+1. Make sure you have Go installed on your machine (>=1.16.8) and $GOPATH is set correctly.
+
+   `$ go version`
+
+   `$ echo $GOPATH`
+
+2. Install Avalanche by running the following command:
+
+   `$ yarn install:avalanche`
+
+3. To start the local Avalanche node, run the following command:
+
+   `$ yarn start:avalanche`
+
+4. To fund the Avalanche node, you can use the endpoints declared in `http/fund.http`. (can be used with REST Client vscode extension) - See [docs](https://docs.avax.network/build/tutorials/platform/fund-a-local-test-network) for more info
+
 ## Testing the smart contracts
 
-For testing purpuses we will use [Hardhat](https://hardhat.org/getting-started/).
+For testing purposes we will use [Hardhat](https://hardhat.org/getting-started/).
 
 1. intall the npm packages: `yarn`
 
 2. fill out the `.env` file based on the `.env.example`
 
 3. run the tests: `yarn run test`
-
-## Networks setup
-
-After these steps you will be able to interact with the DEX locally.
-
-1. [Create a Local Test Network](https://docs.avax.network/build/tutorials/platform/create-a-local-test-network)
-
-2. [Fund a Local Test Network](https://docs.avax.network/build/tutorials/platform/fund-a-local-test-network)
 
 ## Deploy the smart contracts
 
