@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IPair.sol";
 import "./ApexERC20.sol";
-import "./libraries/Math.sol";
-import "./libraries/UQ112x112.sol";
+import "./interfaces/IApexERC20.sol";
+import "../libraries/Math.sol";
+import "../libraries/UQ112x112.sol";
 import "./interfaces/IFactory.sol";
 import "./interfaces/ICallee.sol";
 
@@ -40,6 +40,7 @@ contract Pair is IPair, ApexERC20 {
   function getReserves()
     public
     view
+    override
     returns (
       uint112 _reserve0,
       uint112 _reserve1,
@@ -98,28 +99,6 @@ contract Pair is IPair, ApexERC20 {
     emit Sync(uint112(balance0), uint112(balance1));
   }
 
-  // if fee is on, mint liquidity equivalent to 1/6th of the growth in sqrt(k)
-  function _mintFee(uint112 _reserve0, uint112 _reserve1) private returns (bool feeOn) {
-    address feeTo = IFactory(factory).feeTo();
-    feeOn = feeTo != address(0);
-    uint256 _kLast = kLast; // gas savings
-    if (feeOn) {
-      if (_kLast != 0) {
-        uint256 rootK = Math.sqrt(uint256(_reserve0).mul(_reserve1));
-        uint256 rootKLast = Math.sqrt(_kLast);
-        if (rootK > rootKLast) {
-          uint256 _totalSupply = totalSupply();
-          uint256 numerator = _totalSupply.mul(rootK.sub(rootKLast));
-          uint256 denominator = rootK.mul(5).add(rootKLast);
-          uint256 liquidity = numerator / denominator;
-          if (liquidity > 0) _mint(feeTo, liquidity);
-        }
-      }
-    } else if (_kLast != 0) {
-      kLast = 0;
-    }
-  }
-
   // this low-level function should be called from a contract which performs important safety checks
   function mint(address to) external override lock returns (uint256 liquidity) {
     (uint112 _reserve0, uint112 _reserve1, ) = this.getReserves(); // gas savings
@@ -128,8 +107,7 @@ contract Pair is IPair, ApexERC20 {
     uint256 amount0 = balance0.sub(_reserve0);
     uint256 amount1 = balance1.sub(_reserve1);
 
-    bool feeOn = _mintFee(_reserve0, _reserve1);
-    uint256 _totalSupply = totalSupply(); // gas savings, must be defined here since totalSupply can update in _mintFee
+    uint256 _totalSupply = this.totalSupply(); // gas savings
     if (_totalSupply == 0) {
       liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
       _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
@@ -140,7 +118,6 @@ contract Pair is IPair, ApexERC20 {
     _mint(to, liquidity);
 
     _update(balance0, balance1, _reserve0, _reserve1);
-    if (feeOn) kLast = uint256(reserve0).mul(reserve1); // reserve0 and reserve1 are up-to-date
     emit Mint(msg.sender, amount0, amount1);
   }
 
@@ -151,10 +128,9 @@ contract Pair is IPair, ApexERC20 {
     address _token1 = token1; // gas savings
     uint256 balance0 = IERC20(_token0).balanceOf(address(this));
     uint256 balance1 = IERC20(_token1).balanceOf(address(this));
-    uint256 liquidity = balanceOf(address(this));
+    uint256 liquidity = this.balanceOf(address(this));
 
-    bool feeOn = _mintFee(_reserve0, _reserve1);
-    uint256 _totalSupply = this.totalSupply(); // gas savings, must be defined here since totalSupply can update in _mintFee
+    uint256 _totalSupply = this.totalSupply(); // gas savings
     amount0 = liquidity.mul(balance0) / _totalSupply; // using balances ensures pro-rata distribution
     amount1 = liquidity.mul(balance1) / _totalSupply; // using balances ensures pro-rata distribution
     require(amount0 > 0 && amount1 > 0, "Insufficient liquidity burned");
@@ -165,7 +141,6 @@ contract Pair is IPair, ApexERC20 {
     balance1 = IERC20(_token1).balanceOf(address(this));
 
     _update(balance0, balance1, _reserve0, _reserve1);
-    if (feeOn) kLast = uint256(reserve0).mul(reserve1); // reserve0 and reserve1 are up-to-date
     emit Burn(msg.sender, amount0, amount1, to);
   }
 

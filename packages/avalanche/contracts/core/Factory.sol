@@ -32,7 +32,7 @@ contract Factory is IFactory {
     bytes memory bytecode = type(Pair).creationCode;
     bytes32 salt = keccak256(abi.encodePacked(token0, token1));
     assembly {
-      pair := create2(0, add(bytecode, 32), mload(bytecode), salt)
+      pair := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
     }
 
     IPair(pair).initialize(token0, token1);
