@@ -4,7 +4,6 @@ pragma solidity >=0.8.0;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./interfaces/IPair.sol";
 import "./ApexERC20.sol";
-import "./interfaces/IApexERC20.sol";
 import "../libraries/Math.sol";
 import "../libraries/UQ112x112.sol";
 import "./interfaces/IFactory.sol";
@@ -101,13 +100,13 @@ contract Pair is IPair, ApexERC20 {
 
   // this low-level function should be called from a contract which performs important safety checks
   function mint(address to) external override lock returns (uint256 liquidity) {
-    (uint112 _reserve0, uint112 _reserve1, ) = this.getReserves(); // gas savings
+    (uint112 _reserve0, uint112 _reserve1, ) = getReserves(); // gas savings
     uint256 balance0 = IERC20(token0).balanceOf(address(this));
     uint256 balance1 = IERC20(token1).balanceOf(address(this));
     uint256 amount0 = balance0.sub(_reserve0);
     uint256 amount1 = balance1.sub(_reserve1);
 
-    uint256 _totalSupply = this.totalSupply(); // gas savings
+    uint256 _totalSupply = totalSupply(); // gas savings
     if (_totalSupply == 0) {
       liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
       _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
@@ -123,14 +122,14 @@ contract Pair is IPair, ApexERC20 {
 
   // this low-level function should be called from a contract which performs important safety checks
   function burn(address to) external override lock returns (uint256 amount0, uint256 amount1) {
-    (uint112 _reserve0, uint112 _reserve1, ) = this.getReserves(); // gas savings
+    (uint112 _reserve0, uint112 _reserve1, ) = getReserves(); // gas savings
     address _token0 = token0; // gas savings
     address _token1 = token1; // gas savings
     uint256 balance0 = IERC20(_token0).balanceOf(address(this));
     uint256 balance1 = IERC20(_token1).balanceOf(address(this));
-    uint256 liquidity = this.balanceOf(address(this));
+    uint256 liquidity = balanceOf(address(this));
 
-    uint256 _totalSupply = this.totalSupply(); // gas savings
+    uint256 _totalSupply = totalSupply(); // gas savings
     amount0 = liquidity.mul(balance0) / _totalSupply; // using balances ensures pro-rata distribution
     amount1 = liquidity.mul(balance1) / _totalSupply; // using balances ensures pro-rata distribution
     require(amount0 > 0 && amount1 > 0, "Insufficient liquidity burned");

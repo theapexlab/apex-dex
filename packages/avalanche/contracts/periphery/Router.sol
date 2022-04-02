@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "../core/interfaces/IFactory.sol";
 import "../core/interfaces/IApexERC20.sol";
+import "../core/interfaces/IPair.sol";
 
 import "../libraries/Helper.sol";
 import "../libraries/Transfer.sol";

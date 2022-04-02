@@ -2,7 +2,9 @@
 pragma solidity >=0.8.0;
 pragma experimental ABIEncoderV2;
 
-interface IPair {
+import "./IApexERC20.sol";
+
+interface IPair is IApexERC20 {
   function MINIMUM_LIQUIDITY() external pure returns (uint256);
 
   function factory() external view returns (address);
@@ -29,12 +31,6 @@ interface IPair {
   function mint(address to) external returns (uint256 liquidity);
 
   function burn(address to) external returns (uint256 amount0, uint256 amount1);
-
-  function transferFrom(
-    address from,
-    address to,
-    uint256 value
-  ) external returns (bool);
 
   function swap(
     uint256 amount0Out,
