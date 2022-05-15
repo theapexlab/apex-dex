@@ -6,16 +6,11 @@ import "./Pair.sol";
 
 contract Factory is IFactory {
   address public override feeTo;
-  address public override feeToSetter;
 
   mapping(address => mapping(address => address)) public override getPair;
   address[] public override allPairs;
 
   event PairCreated(address indexed token0, address indexed token1, address pair, uint256);
-
-  constructor(address _feeToSetter) {
-    feeToSetter = _feeToSetter;
-  }
 
   function allPairsLength() external view override returns (uint256) {
     return allPairs.length;
@@ -40,15 +35,7 @@ contract Factory is IFactory {
     getPair[token1][token0] = pair; // populate mapping in the reverse direction
     allPairs.push(pair);
     emit PairCreated(token0, token1, pair, allPairs.length);
-  }
 
-  function setFeeTo(address _feeTo) external override {
-    require(msg.sender == feeToSetter, "FORBIDDEN");
-    feeTo = _feeTo;
-  }
-
-  function setFeeToSetter(address _feeToSetter) external override {
-    require(msg.sender == feeToSetter, "FORBIDDEN");
-    feeToSetter = _feeToSetter;
+    return pair;
   }
 }

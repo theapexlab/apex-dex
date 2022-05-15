@@ -8,6 +8,7 @@ import "../libraries/Math.sol";
 import "../libraries/UQ112x112.sol";
 import "./interfaces/IFactory.sol";
 import "./interfaces/ICallee.sol";
+import "./interfaces/IApexERC20.sol";
 
 contract Pair is IPair, ApexERC20 {
   using SafeMath for uint256;
@@ -94,6 +95,8 @@ contract Pair is IPair, ApexERC20 {
       price1CumulativeLast += uint256(UQ112x112.encode(_reserve0).uqdiv(_reserve1)) * timeElapsed;
     }
 
+    reserve0 = uint112(balance0);
+    reserve1 = uint112(balance1);
     blockTimestampLast = blockTimestamp;
     emit Sync(uint112(balance0), uint112(balance1));
   }
@@ -109,7 +112,6 @@ contract Pair is IPair, ApexERC20 {
     uint256 _totalSupply = totalSupply(); // gas savings
     if (_totalSupply == 0) {
       liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
-      _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
     } else {
       liquidity = Math.min(amount0.mul(_totalSupply) / _reserve0, amount1.mul(_totalSupply) / _reserve1);
     }
@@ -176,7 +178,7 @@ contract Pair is IPair, ApexERC20 {
       // scope for reserve{0,1}Adjusted, avoids stack too deep errors
       uint256 balance0Adjusted = balance0.mul(1000).sub(amount0In.mul(3));
       uint256 balance1Adjusted = balance1.mul(1000).sub(amount1In.mul(3));
-      require(balance0Adjusted.mul(balance1Adjusted) >= uint256(_reserve0).mul(_reserve1).mul(1000**2), "K");
+      require(balance0Adjusted.mul(balance1Adjusted) >= uint256(_reserve0).mul(_reserve1).mul(1000**2), "Incorrect K");
     }
 
     _update(balance0, balance1, _reserve0, _reserve1);
