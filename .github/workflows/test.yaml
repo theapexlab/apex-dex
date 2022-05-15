@@ -20,3 +20,5 @@ jobs:
       - name: Run tests
         working-directory: ./packages/avalanche
         run: yarn run test
+        env:
+          TEST_ACCOUNT_PRIVATE_KEY: ${{ secrets.TEST_ACCOUNT_PRIVATE_KEY }}
