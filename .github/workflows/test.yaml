@@ -1,0 +1,22 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  publish:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        working-directory: ./packages/avalanche
+        run: yarn install
+
+      - name: Run tests
+        working-directory: ./packages/avalanche
+        run: yarn run test
