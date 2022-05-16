@@ -1,6 +1,6 @@
 // Load dependencies
 import {ethers} from "hardhat"
-import {BigNumber, Contract, Signer} from "ethers"
+import {BigNumber, Contract} from "ethers"
 import chai from "chai"
 import chaiAsPromised from "chai-as-promised"
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers"
@@ -10,7 +10,7 @@ chai.use(chaiAsPromised)
 const expect = chai.expect
 
 // Start test block
-describe("Automated Market Maker test", () => {
+describe.skip("Automated Market Maker test", () => {
   let contract: Contract
   let accounts: SignerWithAddress[] = []
 
