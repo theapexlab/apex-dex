@@ -39,8 +39,6 @@ interface IPair is IApexERC20 {
     bytes calldata data
   ) external;
 
-  function skim(address to) external;
-
   function sync() external;
 
   function initialize(address, address) external;

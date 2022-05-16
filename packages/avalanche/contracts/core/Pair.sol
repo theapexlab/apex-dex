@@ -78,7 +78,8 @@ contract Pair is IPair, ApexERC20 {
     token1 = _token1;
   }
 
-  // update reserves and, on the first call per block, price accumulators
+  // update reserves and, on the first call per block,
+  // price accumulators
   function _update(
     uint256 balance0,
     uint256 balance1,
@@ -101,7 +102,10 @@ contract Pair is IPair, ApexERC20 {
     emit Sync(uint112(balance0), uint112(balance1));
   }
 
-  // this low-level function should be called from a contract which performs important safety checks
+  /**
+    In the blockchain, minting means, validating information, 
+    creating a new block, and recording that information into the blockchain.
+ */
   function mint(address to) external override lock returns (uint256 liquidity) {
     (uint112 _reserve0, uint112 _reserve1, ) = getReserves(); // gas savings
     uint256 balance0 = IERC20(token0).balanceOf(address(this));
@@ -122,7 +126,12 @@ contract Pair is IPair, ApexERC20 {
     emit Mint(msg.sender, amount0, amount1);
   }
 
-  // this low-level function should be called from a contract which performs important safety checks
+  /**
+    Cryptocurrency burning is the process in which users can remove tokens (also called coins) from circulation, 
+    which reduces the number of coins in use. 
+    The tokens are sent to a wallet address that cannot be used for transactions other than receiving the coins. 
+    The wallet is outside the network, and the tokens can no longer be used.
+   */
   function burn(address to) external override lock returns (uint256 amount0, uint256 amount1) {
     (uint112 _reserve0, uint112 _reserve1, ) = getReserves(); // gas savings
     address _token0 = token0; // gas savings
@@ -145,7 +154,10 @@ contract Pair is IPair, ApexERC20 {
     emit Burn(msg.sender, amount0, amount1, to);
   }
 
-  // this low-level function should be called from a contract which performs important safety checks
+  /** 
+    Token swap allows users to trade directly 
+    between two types of tokens as an atomic transaction.
+   */
   function swap(
     uint256 amount0Out,
     uint256 amount1Out,
@@ -164,10 +176,13 @@ contract Pair is IPair, ApexERC20 {
       // scope for _token{0,1}, avoids stack too deep errors
       address _token0 = token0;
       address _token1 = token1;
+
       require(to != _token0 && to != _token1, "Invalid to");
+
       if (amount0Out > 0) _safeTransfer(_token0, to, amount0Out); // optimistically transfer tokens
       if (amount1Out > 0) _safeTransfer(_token1, to, amount1Out); // optimistically transfer tokens
       if (data.length > 0) ICallee(to).call(msg.sender, amount0Out, amount1Out, data);
+
       balance0 = IERC20(_token0).balanceOf(address(this));
       balance1 = IERC20(_token1).balanceOf(address(this));
     }
@@ -183,12 +198,6 @@ contract Pair is IPair, ApexERC20 {
 
     _update(balance0, balance1, _reserve0, _reserve1);
     emit Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to);
-  }
-
-  // force balances to match reserves
-  function skim(address to) external override lock {
-    _safeTransfer(token0, to, IERC20(token0).balanceOf(address(this)).sub(reserve0));
-    _safeTransfer(token1, to, IERC20(token1).balanceOf(address(this)).sub(reserve1));
   }
 
   // force reserves to match balances
