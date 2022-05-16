@@ -13,7 +13,7 @@
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat run scripts/deploy.ts",
     "contract-size": "npx hardhat size-contracts",
-    "test": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat test --network localhost",
+    "test": "TS_NODE_TRANSPILE_ONLY=1 npx hardhat test",
     "solhint": "./node_modules/.bin/solhint -f table contracts/**/*.sol",
     "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol"
   },
